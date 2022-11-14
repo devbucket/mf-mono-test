@@ -1,0 +1,37 @@
+{
+  "name": "root",
+  "version": "1.0.0",
+  "repository": "git@github.com:devbucket/mf-mono-test.git",
+  "author": "devbucket <flomueller1981@gmail.com>",
+  "license": "Apache 2.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "start": "concurrently \"wsrun --parallel --exclude-missing start\""
+  },
+  "devDependencies": {
+    "@graphql-eslint/eslint-plugin": "^3.13.1",
+    "@types/node": "^18.11.9",
+    "@types/node-fetch": "^2.6.2",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "concurrently": "^7.5.0",
+    "eslint": "^8.27.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "lerna": "^6.0.3",
+    "ts-node": "^10.9.1",
+    "wsrun": "^5.2.4"
+  },
+  "dependencies": {
+    "graphql": "^15.8.0",
+    "typescript": "^4.8.4"
+  }
+}

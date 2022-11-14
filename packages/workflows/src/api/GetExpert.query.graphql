@@ -1,0 +1,12 @@
+query GetExpert($profileId: String!) {
+  expert(expertId: $profileId) {
+    profileId
+    firstName
+    middleName
+    lastName
+    titles
+    primaryAffiliation {
+      name
+    }
+  }
+}

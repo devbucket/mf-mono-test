@@ -1,0 +1,61 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "jsx": "react",
+    "lib": [
+      "es2021",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "build",
+    "pretty": true,
+    "removeComments": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "stripInternal": true,
+    "target": "es5",
+  },
+  "include": [
+    "packages/**/*",
+    "packages/*/types",
+  ],
+  "exclude": [
+    "./build",
+    "node_modules",
+  ],
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "ts-node": {
+    "extends": "ts-node/node16/tsconfig.json",
+    "compilerOptions": {
+      "target": "ESNext",
+    }
+  }
+}

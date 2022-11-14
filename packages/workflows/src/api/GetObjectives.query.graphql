@@ -1,0 +1,19 @@
+query GetObjectives {
+  objectiveResults {
+    total
+    results {
+      ...on Objective {
+        id
+        title
+        status {
+          id
+          slug
+          name
+        }
+      }
+      ...on RestrictedObjective {
+        id
+      }
+    }
+  }
+}

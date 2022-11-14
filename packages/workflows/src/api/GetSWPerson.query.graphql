@@ -1,0 +1,6 @@
+query GetSWPerson($personId: ID!) {
+  person(id:$personId) {
+    name
+    homeworld {name}
+  }
+}
