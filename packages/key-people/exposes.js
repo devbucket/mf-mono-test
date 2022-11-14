@@ -1,4 +1,4 @@
 module.exports = {
-  './menu': './src/menu',
-  './KeyPeople': './src/App.tsx',
+  './menu': './src/menu.ts',
+  './routes': './src/routes.tsx',
 };

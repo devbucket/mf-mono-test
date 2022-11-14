@@ -44,11 +44,6 @@
   },
   "include": [
     "packages/**/*",
-    "packages/*/types",
-  ],
-  "exclude": [
-    "./build",
-    "node_modules",
   ],
   "compileOnSave": false,
   "buildOnSave": false,

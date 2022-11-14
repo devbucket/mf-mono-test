@@ -1,0 +1,13 @@
+# import "./ObjectiveData.fragment.graphql"
+
+query GetObjective($id: Int!) {
+  objectiveResult(objectiveId: $id) {
+    ...on Objective {
+      id
+      title
+    }
+    ...on RestrictedObjective {
+      id
+    }
+  }
+}

@@ -1,3 +1,5 @@
+# import "./ObjectiveData.fragment.graphql"
+
 query GetObjectives {
   objectiveResults {
     total
@@ -5,11 +7,6 @@ query GetObjectives {
       ...on Objective {
         id
         title
-        status {
-          id
-          slug
-          name
-        }
       }
       ...on RestrictedObjective {
         id

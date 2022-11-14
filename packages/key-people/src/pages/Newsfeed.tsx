@@ -9,20 +9,18 @@ import AnotherSharedComponent from 'workflows/AnotherSharedComponent';
 
 export default function Newsfeed() {
   return (
-    <Box sx={{ my: 2 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2 }}>
-            Newsfeed 1
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <SomeSharedComponent />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <AnotherSharedComponent />
-        </Grid>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Paper sx={{ p: 2 }}>
+          Newsfeed 1
+        </Paper>
       </Grid>
-    </Box>
+      <Grid item xs={12} md={6}>
+        <SomeSharedComponent />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <AnotherSharedComponent />
+      </Grid>
+    </Grid>
   );
 }

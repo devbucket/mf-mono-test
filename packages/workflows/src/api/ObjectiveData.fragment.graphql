@@ -1,0 +1,4 @@
+fragment ObjectiveData on Objective {
+  id
+  title
+}

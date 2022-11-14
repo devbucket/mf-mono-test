@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '..', '..', '.env') });
+require('dotenv').config();
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
@@ -69,8 +70,8 @@ module.exports = function createWebpackConfig(props) {
       port: HOST_CONFIG[appName].port,
       host: HOST_CONFIG[appName].internalHost,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      hot: false,
-      liveReload: true,
+      hot: true,
+      liveReload: false,
     },
 
     performance: {

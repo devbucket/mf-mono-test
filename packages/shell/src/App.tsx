@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
-  Route,
   RouterProvider,
   createBrowserRouter,
-  createRoutesFromElements,
 } from 'react-router-dom';
 
 import StyledEngineProvider from '@mui/material/StyledEngineProvider';
@@ -13,26 +11,28 @@ import { useTheme } from '@mui/material/styles';
 
 import NotFound from '@link/common/components/NotFound/NotFound';
 
-import KeyPeople from 'keypeople/KeyPeople';
-import Workflows from 'workflows/Workflows';
+import keyPeopleRoutes from 'keypeople/routes';
+import workflowsRoutes from 'workflows/routes';
 
-import Layout from './Layout';
+import Layout from './components/Layout';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      ...keyPeopleRoutes,
+      ...workflowsRoutes,
+    ],
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+]);
 
 export default function App() {
   const theme = useTheme();
-
-  const router = createBrowserRouter((
-    createRoutesFromElements((
-      <Route path="/" element={<Layout />} errorElement={<NotFound />}>
-        <Route path="/*" element={(
-          <>
-            <KeyPeople />
-            <Workflows />
-          </>
-        )} />
-      </Route>
-    ))
-  ));
 
   return (
     <StyledEngineProvider injectFirst>

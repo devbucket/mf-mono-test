@@ -1,17 +1,18 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
 
 import GQL from '../api/GetObjectives.query.graphql';
 
 export default function Objectives() {
   const { data, loading } = useQuery(GQL.GetObjectives);
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -21,26 +22,19 @@ export default function Objectives() {
     );
   }
 
-  if (!loading || !data?.objectiveResults || data?.objectiveResults?.total === 0) {
+  if (!loading && data?.objectiveResults?.total === 0) {
     return null;
   }
 
   return (
-    <Box sx={{ my: 2 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2 }}>
-            {data?.objectiveResults?.results.map((objective) => (
-              <>
-                <Typography variant="body1">
-                  {objective.name}
-                </Typography>
-                <Divider />
-              </>
-            ))}
-          </Paper>
-        </Grid>
-      </Grid>
-    </Box>
+    <Paper>
+      <MenuList dense>
+        {data?.objectiveResults?.results.map((objective) => (
+          <MenuItem key={objective.id} onClick={() => navigate(`/objective/${objective.id}`)}>
+            <ListItemText primary={objective.title} />
+          </MenuItem>
+        ))}
+      </MenuList>
+    </Paper>
   );
 }

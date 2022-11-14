@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-import client from '../../client';
+import client from '../../api/client';
 import GQL from '../../api/GetExpert.query.graphql';
 
 export default function SomeSharedComponent() {

@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+require('dotenv').config();
+const getHostConfig = require('./packages/common/scripts/getHostConfig');
+
+const HOST_CONFIG = getHostConfig();
+
 module.exports = {
   env: {
     browser: true,
@@ -30,6 +36,7 @@ module.exports = {
     'class-methods-use-this': 0,
     'max-classes-per-file': 0,
     'prefer-arrow-callback': 0,
+    'import/no-unresolved': ['error', { ignore: [HOST_CONFIG.ignored] }],
     'import/no-extraneous-dependencies': 0,
     'import/prefer-default-export': 0,
     'no-param-reassign': ['error', { props: false }],
@@ -85,6 +92,19 @@ module.exports = {
       prop: 'parens-new-line',
     }],
   },
+  settings: {
+    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+    'import/ignore': [HOST_CONFIG.ignored],
+    'import/resolver': {
+      typescript: {
+        project: 'packages/*/tsconfig.json',
+        alwaysTryTypes: true,
+      },
+    },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+  },
   overrides: [
     {
       files: [
@@ -101,13 +121,13 @@ module.exports = {
         'react/require-default-props': 0,
       },
     },
-    {
-      files: ['*.graphql'],
-      extends: 'plugin:@graphql-eslint/schema-recommended',
-      parserOptions: {
-        schema: './schema.graphql',
-      },
-    },
+    // {
+    //   files: ['*.graphql'],
+    //   extends: 'plugin:@graphql-eslint/schema-recommended',
+    //   // parserOptions: {
+    //   //   schema: './schema.graphql',
+    //   // },
+    // },
     // {
     //   files: ['cypress/**/*'],
     //   env: {
@@ -117,15 +137,4 @@ module.exports = {
     //   plugins: ['cypress'],
     // },
   ],
-  settings: {
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
-    'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-      },
-    },
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
-    },
-  },
 };

@@ -4,6 +4,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import apolloLogger from 'apollo-link-logger';
+import jwtDecode from 'jwt-decode';
 import type { InMemoryCacheConfig } from '@apollo/client';
 import fetch from 'cross-fetch';
 import localStorage from 'store';
@@ -22,9 +23,12 @@ function getAccessToken() {
     headers: { 'Content-Type': 'application/json' },
   })
     .then((response) => response.json())
-    .then(({ access }: { access: string }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .then((user: any) => {
       console.log('%cLINK: ✅ Successfully retrieved access token.\n', 'color: cyan');
-      return access;
+      const storagePayload = `{"user":"${JSON.stringify(user).replaceAll('"', '\\"')}"}`;
+      window.localStorage.setItem('persist:link', storagePayload);
+      return user.access;
     })
     .catch((error) => {
       console.log('%cLINK: ⛔ An error occured:', 'color: red');
@@ -62,6 +66,7 @@ export default function createGraphQLClient(url?: string, cacheConfig?: InMemory
             resolve({ headers: newHeaders });
             return;
           }
+
           resolve({
             headers: {
               ...newHeaders,
