@@ -22,3 +22,6 @@ declare module 'workflows/routes' {
   export default Array<RouteObject>;
 }
 
+declare module 'auth/Login' {
+  export default function Login(): JSX.Element;
+}

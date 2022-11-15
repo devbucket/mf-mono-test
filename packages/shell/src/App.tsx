@@ -10,6 +10,7 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import { useTheme } from '@mui/material/styles';
 
 import NotFound from '@link/common/components/NotFound/NotFound';
+import useIsLoggedIn from '@link/common/hooks/useIsLoggedIn';
 
 import keyPeopleRoutes from 'keypeople/routes';
 import workflowsRoutes from 'workflows/routes';
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
 
 export default function App() {
   const theme = useTheme();
+  const isLoggedIn = useIsLoggedIn();
 
   return (
     <StyledEngineProvider injectFirst>

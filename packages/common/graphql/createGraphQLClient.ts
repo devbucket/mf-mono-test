@@ -7,60 +7,32 @@ import apolloLogger from 'apollo-link-logger';
 import jwtDecode from 'jwt-decode';
 import type { InMemoryCacheConfig } from '@apollo/client';
 import fetch from 'cross-fetch';
-import localStorage from 'store';
-
-/** Obtains an access token */
-function getAccessToken() {
-  const username = process.env.REACT_APP_USERNAME || '';
-  const password = process.env.REACT_APP_PASSWORD || '';
-  const authEndpoint = `${process.env.REACT_APP_API}/user/obtain-auth-token/`;
-
-  console.log(`%cLINK: ⚙️ Obtaining user access token for user ${username} ...`, 'color: cyan');
-
-  return fetch(authEndpoint, {
-    method: 'POST',
-    body: JSON.stringify({ username, password }),
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then((response) => response.json())
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .then((user: any) => {
-      console.log('%cLINK: ✅ Successfully retrieved access token.\n', 'color: cyan');
-      const storagePayload = `{"user":"${JSON.stringify(user).replaceAll('"', '\\"')}"}`;
-      window.localStorage.setItem('persist:link', storagePayload);
-      return user.access;
-    })
-    .catch((error) => {
-      console.log('%cLINK: ⛔ An error occured:', 'color: red');
-      console.error(error);
-      return null;
-    });
-}
+import { useUserStore } from '../store';
+import getAccessToken from './getAccessToken';
 
 /** Creates a new GraphQL client */
 export default function createGraphQLClient(url?: string, cacheConfig?: InMemoryCacheConfig) {
+  const username = process.env.REACT_APP_USERNAME || '';
+  const password = process.env.REACT_APP_PASSWORD || '';
+
   const httpLink = createHttpLink({
     uri: url || window.graphqlUrl || process.env.REACT_APP_GRAPHQL_URI || window.location.origin,
     fetch,
   });
 
-  // eslint-disable-next-line consistent-return
-  const authLink = setContext((_, { headers }) => new Promise((resolve, reject) => {
-    // Using the user directly from localStorage will eliminate
-    // unwanted side effects with Module Federation.
-    const { user: persistedUserLocalStorage = '{}' } = localStorage.get('persist:link', { user: '{}' });
-    const user = JSON.parse(persistedUserLocalStorage);
+  const authLink = setContext((_, { headers }) => new Promise((resolve) => {
+    const { user } = useUserStore.getState();
 
     const newHeaders = { ...headers, 'Link-App-Name': 'link' };
 
-    if (!user.token) {
+    if (!user || !user?.token) {
       // --- ONLY FOR DEMO PURPOSES ---
       if (!process.env.REACT_APP_USERNAME && !process.env.REACT_APP_PASSWORD) {
         resolve({ headers: newHeaders });
         return;
       }
 
-      getAccessToken()
+      getAccessToken(username, password)
         .then((newToken) => {
           if (!newToken) {
             resolve({ headers: newHeaders });
@@ -73,7 +45,12 @@ export default function createGraphQLClient(url?: string, cacheConfig?: InMemory
               authorization: `JWT ${newToken}`,
             },
           });
+        })
+        .catch((error) => {
+          console.error(error);
+          resolve({ headers: newHeaders });
         });
+
       return;
       // !END --- ONLY FOR DEMO PURPOSES ---
     }
@@ -85,7 +62,8 @@ export default function createGraphQLClient(url?: string, cacheConfig?: InMemory
 
       // If refresh token is invalid directly throw an error and log user out
       if (!refreshValid) {
-        reject(new Error('Refresh token is expired'));
+        console.error(new Error('Refresh token is expired'));
+        resolve({ headers: newHeaders });
         return;
       }
 
@@ -102,7 +80,8 @@ export default function createGraphQLClient(url?: string, cacheConfig?: InMemory
             });
             return;
           }
-          reject(new Error('Refresh request failed'));
+          console.error(new Error('Refresh request failed'));
+          resolve({ headers: newHeaders });
         }));
       } else {
         // User has a valid token, everything is fine!
@@ -115,6 +94,7 @@ export default function createGraphQLClient(url?: string, cacheConfig?: InMemory
         return;
       }
     } catch (err) {
+      console.log(err, 'color: red');
       // Sentry.captureMessage('Force a logout because of a 401.');
       // store.dispatch(logout());
       resolve({ headers: newHeaders });

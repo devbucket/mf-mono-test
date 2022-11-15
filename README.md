@@ -1,1 +1,1 @@
-# MF Mono-Repository Testing
+# Module Federation Test Repo

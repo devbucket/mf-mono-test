@@ -1,10 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import MuiMenu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import useLoginLogout from '../../hooks/useLoginLogout';
 
 import { i18n } from '../../i18n';
 import useScrollPosition from '../../hooks/useScrollPosition';
@@ -35,6 +41,23 @@ export default function AppHeader(props: Props) {
     loginUrl = 'https://dev.veeva.link',
   } = props;
   const scrollY = useScrollPosition();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const { logout } = useLoginLogout();
+
+  const handleProfileMenuOpen = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleMenuClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    logout();
+    handleMenuClose();
+  }, [handleMenuClose, logout]);
 
   const displayedMenuItems = useMemo(() => {
     if (menuItems.length >= MAX_MENU_ITEMS) {
@@ -96,6 +119,19 @@ export default function AppHeader(props: Props) {
             }}
           >
             <Menu menuItems={displayedMenuItems} />
+            <IconButton size="large" edge="end" onClick={handleProfileMenuOpen} color="inherit">
+              <AccountCircleIcon />
+            </IconButton>
+            <MuiMenu
+              anchorEl={anchorEl}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              keepMounted
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              open={isMenuOpen}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </MuiMenu>
           </Box>
         </Container>
       </Box>

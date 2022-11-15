@@ -70,8 +70,8 @@ module.exports = function createWebpackConfig(props) {
       port: HOST_CONFIG[appName].port,
       host: HOST_CONFIG[appName].internalHost,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      hot: true,
-      liveReload: false,
+      hot: false,
+      liveReload: true,
     },
 
     performance: {
