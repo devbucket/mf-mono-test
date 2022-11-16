@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+
 require('dotenv').config({ path: path.resolve(__dirname, '..', '..', '..', '.env') });
 require('dotenv').config();
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
-const CompressionWebpackPlugin = require('compression-webpack-plugin');
-const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+
 const getHostConfig = require('./getHostConfig');
 const getShared = require('./getShared');
 

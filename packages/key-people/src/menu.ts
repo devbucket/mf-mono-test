@@ -1,6 +1,7 @@
 import type { MenuItemConfig } from '@link/common/components/AppHeader/AppHeader.types';
-import NewsfeedIcon from './images/icon-newsfeed.svg';
+
 import FavoritesIcon from './images/icon-favorites.svg';
+import NewsfeedIcon from './images/icon-newsfeed.svg';
 
 const menu: MenuItemConfig[] = [
   {

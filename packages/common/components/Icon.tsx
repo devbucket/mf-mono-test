@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ReactNode } from 'react';
+
 import type { SxProps, Theme } from '@mui/material';
 import Box from '@mui/material/Box';
 
@@ -21,7 +22,8 @@ export default function Icon(props: Props) {
   } = props;
 
   return (
-    <Box component="svg"
+    <Box
+      component="svg"
       viewBox={viewBox}
       xmlns="http://www.w3.org/2000/svg"
       className={`${className || ''} icon`.trim()}

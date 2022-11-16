@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Container from '@mui/material/Container';
+
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
 import MuiLink from '@mui/material/Link';
-import Grid from '@mui/material/Unstable_Grid2';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
+
 import NotFoundGif from './notfound.gif';
 
 export default function NotFound() {
@@ -13,9 +15,12 @@ export default function NotFound() {
     <Container maxWidth="lg">
       <Grid container>
         <Grid
-          xs={10} xsOffset={1}
-          sm={8} smOffset={2}
-          md={6} mdOffset={3}
+          xs={10}
+          xsOffset={1}
+          sm={8}
+          smOffset={2}
+          md={6}
+          mdOffset={3}
         >
           <Paper
             sx={{
@@ -42,7 +47,10 @@ export default function NotFound() {
               Page not found
             </Typography>
             <Typography>
-              Please check your URL, or <MuiLink component={Link} to="/">return home</MuiLink>.
+              Please check your URL, or
+              {' '}
+              <MuiLink component={Link} to="/">return home</MuiLink>
+              .
             </Typography>
           </Paper>
         </Grid>

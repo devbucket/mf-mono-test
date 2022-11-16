@@ -1,9 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+
 import { useQuery } from '@apollo/client';
 
-import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 import GQL from '../api/GetObjective.query.graphql';

@@ -4,17 +4,17 @@ import {
   createBrowserRouter,
 } from 'react-router-dom';
 
-import StyledEngineProvider from '@mui/material/StyledEngineProvider';
-import CssBaseline from '@mui/material/CssBaseline';
-import GlobalStyles from '@mui/material/GlobalStyles';
-import { useTheme } from '@mui/material/styles';
-
 import NotFound from '@link/common/components/NotFound/NotFound';
 
-import keyPeopleRoutes from 'keypeople/routes';
 import workflowsRoutes from 'workflows/routes';
 
+import CssBaseline from '@mui/material/CssBaseline';
+import GlobalStyles from '@mui/material/GlobalStyles';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
+import { useTheme } from '@mui/material/styles';
+
 import Layout from './components/Layout';
+import routes from './routes';
 
 export default function App() {
   const theme = useTheme();
@@ -24,7 +24,7 @@ export default function App() {
       path: '/',
       element: <Layout />,
       children: [
-        ...keyPeopleRoutes,
+        ...routes,
         ...workflowsRoutes,
       ],
     },

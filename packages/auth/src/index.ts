@@ -4,5 +4,3 @@ if (process.env.NODE_ENV === 'development') {
   window.sentryEnv = process.env.REACT_APP_SENTRY_ENVIRONMENT || 'local';
   window.useGraphQlDevtools = true;
 }
-
-import('./bootstrap');

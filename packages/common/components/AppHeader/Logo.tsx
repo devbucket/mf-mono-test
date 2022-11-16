@@ -1,11 +1,12 @@
 import React from 'react';
-import Icon from '../Icon';
+
 import type { AppLogoProps } from '../AppHeader.types';
+import Icon from '../Icon';
 
 /**
  * Render the logos for the Link Applications
  */
-export function Logo(props: AppLogoProps) {
+export default function Logo(props: AppLogoProps) {
   const {
     width = 129,
     height = 46,

@@ -1,4 +1,5 @@
 import type { MenuItemConfig } from '@link/common/components/AppHeader/AppHeader.types';
+
 import ObjectivesIcon from './images/icon-objectives.svg';
 
 const menu: MenuItemConfig[] = [

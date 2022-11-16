@@ -1,5 +1,5 @@
 import type { AppsConfig } from './AppHeader.types';
-import { Logo } from './Logo';
+import Logo from './Logo';
 
 let domainEnvIndicator = '';
 const { host } = window.location;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
 
 import type { MenuItemConfig } from './AppHeader.types';
 
@@ -20,7 +20,12 @@ export default function Menu({ menuItems }: Props) {
 
   return (
     <Box component="nav" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Box component="ul" sx={{ display: 'flex', listStyle: 'none', m: 0, p: 0 }}>
+      <Box
+        component="ul"
+        sx={{
+          display: 'flex', listStyle: 'none', m: 0, p: 0,
+        }}
+      >
         {menuItems.map((item) => {
           if (!item.hasPermission) {
             return null;
@@ -109,16 +114,19 @@ export default function Menu({ menuItems }: Props) {
                   className="icon"
                 />
                 {/* Label */}
-                <Box component="span" sx={{
-                  whiteSpace: 'normal',
-                  [breakpoints.down('md')]: {
-                    width: 0,
-                    height: 0,
-                    padding: 0,
-                    opacity: 0,
-                    overflow: 'hidden',
-                  },
-                }}>
+                <Box
+                  component="span"
+                  sx={{
+                    whiteSpace: 'normal',
+                    [breakpoints.down('md')]: {
+                      width: 0,
+                      height: 0,
+                      padding: 0,
+                      opacity: 0,
+                      overflow: 'hidden',
+                    },
+                  }}
+                >
                   {item.label}
                 </Box>
               </Box>

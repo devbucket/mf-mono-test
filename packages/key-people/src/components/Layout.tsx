@@ -8,13 +8,15 @@ import type { MenuItemConfig } from '@link/common/components/AppHeader/AppHeader
 import Login from 'auth/Login';
 import useLoginLogout from 'auth/useLoginLogout';
 import useUser from 'auth/useUser';
-import keyPeopleMenu from 'keypeople/menu';
+
 import workflowsMenu from 'workflows/menu';
 
 import Container from '@mui/material/Container';
 
+import menu from '../menu';
+
 const menuItems: MenuItemConfig[] = [
-  ...keyPeopleMenu,
+  ...menu,
   ...workflowsMenu,
 ];
 

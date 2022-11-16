@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Shell from 'shell/Shell';
 
-render(<Shell />, document.getElementById('root'));
+import App from './App';
+
+render(<App />, document.getElementById('root'));

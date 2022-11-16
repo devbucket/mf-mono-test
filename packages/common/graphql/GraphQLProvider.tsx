@@ -1,7 +1,9 @@
 import React from 'react';
 import type { ReactNode } from 'react';
+
 import { ApolloProvider } from '@apollo/client';
 import type { InMemoryCacheConfig } from '@apollo/client';
+
 import createGraphQLClient from './createGraphQLClient';
 
 type Props = {

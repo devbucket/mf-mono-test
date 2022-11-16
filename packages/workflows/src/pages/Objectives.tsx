@@ -1,12 +1,13 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
-import Paper from '@mui/material/Paper';
+import { useQuery } from '@apollo/client';
+
 import CircularProgress from '@mui/material/CircularProgress';
-import MenuList from '@mui/material/MenuList';
-import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Paper from '@mui/material/Paper';
 
 import GQL from '../api/GetObjectives.query.graphql';
 

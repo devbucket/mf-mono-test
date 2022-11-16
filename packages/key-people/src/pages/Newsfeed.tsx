@@ -1,11 +1,10 @@
 import React from 'react';
 
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-
-import SomeSharedComponent from 'workflows/SomeSharedComponent';
 import AnotherSharedComponent from 'workflows/AnotherSharedComponent';
+import SomeSharedComponent from 'workflows/SomeSharedComponent';
+
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 export default function Newsfeed() {
   return (
