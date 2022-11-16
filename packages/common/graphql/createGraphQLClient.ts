@@ -1,14 +1,17 @@
 import {
   ApolloClient, InMemoryCache, createHttpLink, from,
 } from '@apollo/client';
+import type { InMemoryCacheConfig } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import apolloLogger from 'apollo-link-logger';
-import jwtDecode from 'jwt-decode';
-import type { InMemoryCacheConfig } from '@apollo/client';
+import useUserStore from 'auth/store';
 import fetch from 'cross-fetch';
-import { useUserStore } from '../store';
+import jwtDecode from 'jwt-decode';
+
 import getAccessToken from './getAccessToken';
+
+const { getUser } = useUserStore.getState();
 
 /** Creates a new GraphQL client */
 export default function createGraphQLClient(url?: string, cacheConfig?: InMemoryCacheConfig) {
@@ -21,84 +24,80 @@ export default function createGraphQLClient(url?: string, cacheConfig?: InMemory
   });
 
   const authLink = setContext((_, { headers }) => new Promise((resolve) => {
-    const { user } = useUserStore.getState();
-
     const newHeaders = { ...headers, 'Link-App-Name': 'link' };
 
-    if (!user || !user?.token) {
-      // --- ONLY FOR DEMO PURPOSES ---
-      if (!process.env.REACT_APP_USERNAME && !process.env.REACT_APP_PASSWORD) {
-        resolve({ headers: newHeaders });
-        return;
-      }
-
-      getAccessToken(username, password)
-        .then((newToken) => {
-          if (!newToken) {
-            resolve({ headers: newHeaders });
-            return;
+    getUser()
+      .then((user) => {
+        if (!user || !user?.token) {
+          // --- ONLY FOR DEMO PURPOSES ---
+          if (!process.env.REACT_APP_USERNAME && !process.env.REACT_APP_PASSWORD) {
+            return { headers: newHeaders };
           }
 
-          resolve({
+          return getAccessToken(username, password)
+            .then((newToken) => {
+              if (!newToken) {
+                return { headers: newHeaders };
+              }
+
+              return {
+                headers: {
+                  ...newHeaders,
+                  authorization: `JWT ${newToken}`,
+                },
+              };
+            })
+            .catch((error) => {
+              console.error(error);
+              return { headers: newHeaders };
+            });
+          // !END --- ONLY FOR DEMO PURPOSES ---
+        }
+
+        try {
+          // const accessTokenDecoded = jwtDecode(user.token);
+          const refreshTokenDecoded = jwtDecode(user.refresh);
+          const refreshValid = Date.now() < (refreshTokenDecoded.exp * 1000);
+
+          // If refresh token is invalid directly throw an error and log user out
+          if (!refreshValid) {
+            console.error(new Error('Refresh token is expired'));
+            return { headers: newHeaders };
+          }
+
+          // If access token is invalid but there is a valid refresh token, run a refresh
+          // and run the GraphQL request with the access token returned from the refresh
+          // if (Date.now() >= (accessTokenDecoded.exp * 1000)) {
+          //   store.dispatch(refreshToken({ refresh: user.refresh }, (res) => {
+          //     if (res?.data?.access) {
+          //       resolve({
+          //         headers: {
+          //           ...newHeaders,
+          //           authorization: `JWT ${res?.data?.access}`,
+          //         },
+          //       });
+          //       return;
+          //     }
+          //     console.error(new Error('Refresh request failed'));
+          //     resolve({ headers: newHeaders });
+          //   }));
+          // } else {
+          // User has a valid token, everything is fine!
+          return {
             headers: {
               ...newHeaders,
-              authorization: `JWT ${newToken}`,
+              authorization: `JWT ${user.token}`,
             },
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          resolve({ headers: newHeaders });
-        });
-
-      return;
-      // !END --- ONLY FOR DEMO PURPOSES ---
-    }
-
-    try {
-      const accessTokenDecoded = jwtDecode(user.token);
-      const refreshTokenDecoded = jwtDecode(user.refresh);
-      const refreshValid = Date.now() < (refreshTokenDecoded.exp * 1000);
-
-      // If refresh token is invalid directly throw an error and log user out
-      if (!refreshValid) {
-        console.error(new Error('Refresh token is expired'));
-        resolve({ headers: newHeaders });
-        return;
-      }
-
-      // If access token is invalid but there is a valid refresh token, run a refresh
-      // and run the GraphQL request with the access token returned from the refresh
-      if (Date.now() >= (accessTokenDecoded.exp * 1000)) {
-        store.dispatch(refreshToken({ refresh: user.refresh }, (res) => {
-          if (res?.data?.access) {
-            resolve({
-              headers: {
-                ...newHeaders,
-                authorization: `JWT ${res?.data?.access}`,
-              },
-            });
-            return;
-          }
-          console.error(new Error('Refresh request failed'));
-          resolve({ headers: newHeaders });
-        }));
-      } else {
-        // User has a valid token, everything is fine!
-        resolve({
-          headers: {
-            ...newHeaders,
-            authorization: `JWT ${user.token}`,
-          },
-        });
-        return;
-      }
-    } catch (err) {
-      console.log(err, 'color: red');
-      // Sentry.captureMessage('Force a logout because of a 401.');
-      // store.dispatch(logout());
-      resolve({ headers: newHeaders });
-    }
+          };
+          // }
+        } catch (err) {
+          console.log(err, 'color: red');
+          // Sentry.captureMessage('Force a logout because of a 401.');
+          // store.dispatch(logout());
+          return { headers: newHeaders };
+        }
+      })
+      .then((response) => resolve(response));
   }));
 
   /** Enables browser logging */

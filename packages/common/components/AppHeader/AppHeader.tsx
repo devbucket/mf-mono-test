@@ -1,19 +1,18 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import MuiMenu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import useLoginLogout from '../../hooks/useLoginLogout';
-
-import { i18n } from '../../i18n';
 import useScrollPosition from '../../hooks/useScrollPosition';
+import { i18n } from '../../i18n';
+
 import { appConfigCollection } from './AppHeader.config';
 import type { MenuItemConfig } from './AppHeader.types';
 import Menu from './Menu';
@@ -28,6 +27,7 @@ type Props = {
   apiUrl?: string;
   loginUrl?: string;
   hideShadow?: boolean;
+  onLogout: () => void;
 };
 
 export default function AppHeader(props: Props) {
@@ -39,12 +39,11 @@ export default function AppHeader(props: Props) {
     menuItems = [],
     apiUrl = 'https://api.dev.veeva.link',
     loginUrl = 'https://dev.veeva.link',
+    onLogout,
   } = props;
   const scrollY = useScrollPosition();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-
-  const { logout } = useLoginLogout();
 
   const handleProfileMenuOpen = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -55,9 +54,9 @@ export default function AppHeader(props: Props) {
   }, []);
 
   const handleLogout = useCallback(() => {
-    logout();
+    onLogout();
     handleMenuClose();
-  }, [handleMenuClose, logout]);
+  }, [handleMenuClose, onLogout]);
 
   const displayedMenuItems = useMemo(() => {
     if (menuItems.length >= MAX_MENU_ITEMS) {

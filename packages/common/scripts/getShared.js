@@ -28,5 +28,13 @@ module.exports = function getShared(pck) {
       singleton: true,
       requiredVersion: pck.dependencies['@apollo/client'],
     },
+    zustand: {
+      singleton: true,
+      requiredVersion: pck.dependencies.zustand,
+    },
+    '@emotion/react': {
+      singleton: true,
+      requiredVersion: pck.dependencies['@emotion/react'],
+    },
   };
 };

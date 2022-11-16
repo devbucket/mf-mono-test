@@ -1,23 +1,25 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
-import localStorage from 'store';
+
 import type { User } from './types';
+
+class UserStore {
+  state: User | null;
+
+  setUser(user: User | null) {
+    this.state = user;
+  }
+}
+
+export const userStore = new UserStore();
 
 type UserState = {
   user: User | null;
-  setUser: (user: User | null) => void;
+  setUser(user: User | null): void;
 }
 
-const initialUser: User | null = localStorage.get('link:user', null);
-
-console.warn({ initialUser });
-
-export const useUserStore = create<UserState>(devtools((set) => ({
-  user: initialUser,
+const useUserStore = create<UserState>((set) => ({
+  user: null,
   setUser: (user) => set({ user }),
-}), { name: 'link:user' }));
+}));
 
-useUserStore.subscribe((state) => {
-  console.warn('subscribed', { state });
-  localStorage.set('link:user', state.user);
-});
+export default useUserStore;

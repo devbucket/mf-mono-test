@@ -1,19 +1,21 @@
-import { useUserStore } from '../store';
-import getUser from './getUser';
+import useUserStore from 'auth/store';
+
+const { getUser } = useUserStore.getState();
 
 /** Obtains an access token */
 export default function getAccessToken(username: string, password: string) {
-  if (!username || !password) return Promise.resolve();
+  if (!username || !password) return Promise.resolve(null);
   console.log(`%cLINK: ⚙️ Obtaining user access token for user ${username} ...`, 'color: cyan');
 
   return getUser(username, password)
     .then((user) => {
       console.log('%cLINK: ✅ Successfully retrieved access token.\n', 'color: cyan');
-      useUserStore.setState({ user });
+      window.localStorage.setItem('link:user', JSON.stringify(user));
       return user.access;
     })
     .catch((error) => {
       console.log('%cLINK: ⛔ An error occured:', 'color: red');
-      return error;
+      console.error(error);
+      return null;
     });
 }

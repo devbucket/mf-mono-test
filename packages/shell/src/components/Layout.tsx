@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
-import { ScrollRestoration, Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-import Container from '@mui/material/Container';
+import {
+  ScrollRestoration, Outlet, useLocation, useNavigate,
+} from 'react-router-dom';
 
 import AppHeader from '@link/common/components/AppHeader/AppHeader';
-import useIsLoggedIn from '@link/common/hooks/useIsLoggedIn';
+import type { MenuItemConfig } from '@link/common/components/AppHeader/AppHeader.types';
 import Login from 'auth/Login';
-
+import useLoginLogout from 'auth/useLoginLogout';
+import useUser from 'auth/useUser';
 import keyPeopleMenu from 'keypeople/menu';
 import workflowsMenu from 'workflows/menu';
+
+import Container from '@mui/material/Container';
 
 const menuItems: MenuItemConfig[] = [
   ...keyPeopleMenu,
@@ -16,23 +19,22 @@ const menuItems: MenuItemConfig[] = [
 ];
 
 export default function Layout() {
-  const isLoggedIn = useIsLoggedIn();
+  const [user] = useUser();
+  const { logout } = useLoginLogout();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  console.warn({ isLoggedIn });
-
   useEffect(() => {
-    // console.warn({ isLoggedIn, pathname });
-    if (isLoggedIn && pathname === '/') {
+    // console.warn({ isLoggedIn: !!user, pathname });
+    if (!!user && pathname === '/') {
       navigate('/newsfeed');
     }
-    if (!isLoggedIn && pathname !== '/') {
+    if (!user && pathname !== '/') {
       navigate('/');
     }
-  }, [isLoggedIn, navigate, pathname]);
+  }, [user, pathname, navigate]);
 
-  if (!isLoggedIn && pathname === '/') {
+  if (!user && pathname === '/') {
     return (
       <Login />
     );
@@ -41,7 +43,7 @@ export default function Layout() {
   return (
     <>
       <ScrollRestoration />
-      <AppHeader domain="veeva.link" menuItems={menuItems} />
+      <AppHeader domain="veeva.link" menuItems={menuItems} onLogout={logout} />
       <Container maxWidth="lg" sx={{ py: 2 }}>
         <Outlet />
       </Container>
