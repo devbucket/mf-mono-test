@@ -7,7 +7,7 @@ import type { User } from './types';
 type UserStore = {
   user: User | null;
   setUser(user: User | null): void;
-  getUser(username?: string, password?: string): Promise<User | null>;
+  loginUser(username?: string, password?: string): Promise<User | null>;
 }
 
 /** stores and holds the user data */
@@ -16,7 +16,7 @@ const useUserStore = create<UserStore>(devtools(persist((set, get) => ({
   setUser(user) {
     set({ user });
   },
-  async getUser(username, password) {
+  async loginUser(username, password) {
     const currentUser = get().user;
 
     if ((!username || !password) && currentUser) {

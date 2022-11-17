@@ -1,7 +1,7 @@
 import useUserStore from '../store';
 
 export default function useLoginLogout() {
-  const getUser = useUserStore((state) => state.getUser);
+  const loginUser = useUserStore((state) => state.loginUser);
   const setUser = useUserStore((state) => state.setUser);
 
   async function login(username: string, password: string) {
@@ -9,7 +9,7 @@ export default function useLoginLogout() {
       throw new Error('You need to pass a user name and a password to login.');
     }
 
-    await getUser(username, password);
+    await loginUser(username, password);
   }
 
   function logout() {

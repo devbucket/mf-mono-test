@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "workflows/*": [
+        "./@mf-typescript/workflows/*"
+      ],
+      "auth/*": [
+        "./@mf-typescript/auth/*"
+      ]
+    }
+  },
+}

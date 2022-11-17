@@ -5,13 +5,11 @@ import type { InMemoryCacheConfig } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import apolloLogger from 'apollo-link-logger';
-import useUserStore from 'auth/store';
 import fetch from 'cross-fetch';
 import jwtDecode from 'jwt-decode';
 
 import getAccessToken from './getAccessToken';
-
-const { getUser } = useUserStore.getState();
+import getUser from './getUser';
 
 /** Creates a new GraphQL client */
 export default function createGraphQLClient(url?: string, cacheConfig?: InMemoryCacheConfig) {

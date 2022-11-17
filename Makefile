@@ -10,12 +10,12 @@ wipe: ## Clears all generated files
 	@find . -name "*error.log" -type f -delete;
 	@find . -name "*debug.log" -type f -delete;
 	@find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
+	@find . -name "@mf-typescript" -type d -prune -exec rm -rf '{}' +
 	@find . -name "build" -type d -prune -exec rm -rf '{}' +
 
 clean: wipe ## Installs fresh node_modules without updating the lock file
 	@echo "Installing dependencies ...";
-	@make install
-	@make schema;
+	@make install;
 
 refresh: wipe ## Installs fresh node_modules and updates the lock file
 	@echo "Installing fresh dependencies ...";

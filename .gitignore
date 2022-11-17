@@ -116,3 +116,5 @@ dist
 .pnp.*
 .mfts
 public/*.tgz
+build/
+@mf-typescript

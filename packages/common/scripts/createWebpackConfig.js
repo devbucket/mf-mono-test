@@ -3,6 +3,7 @@ const path = require('path');
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '..', '..', '.env') });
 require('dotenv').config();
+const FederatedTypesPlugin = require('@module-federation/typescript').default;
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
@@ -28,7 +29,6 @@ module.exports = function createWebpackConfig(props) {
   const {
     appName, pkg, exposes, cwd, overrides = {}, envVars = {}, hasClient = true,
   } = props;
-  const deps = pkg.dependencies;
 
   const HOST_CONFIG = getHostConfig(appName);
   const PUBLIC_DIR = path.resolve(cwd, 'public');
@@ -74,6 +74,9 @@ module.exports = function createWebpackConfig(props) {
       headers: { 'Access-Control-Allow-Origin': '*' },
       hot: false,
       liveReload: true,
+      static: {
+        directory: path.resolve(cwd, 'public'),
+      },
     },
 
     performance: {
@@ -95,6 +98,7 @@ module.exports = function createWebpackConfig(props) {
         },
       }),
       new ModuleFederationPlugin(federationConfig),
+      new FederatedTypesPlugin(federationConfig),
       hasClient && new HtmlWebPackPlugin({
         filename: path.resolve(OUTPUT_DIR, 'index.html'),
         template: path.resolve(PUBLIC_DIR, 'index.html'),
